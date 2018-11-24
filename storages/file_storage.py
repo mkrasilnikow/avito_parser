@@ -32,7 +32,7 @@ class FileStorage(Storage):
         """
         :param data: string
         """
-        with open(self.file_name, 'a') as f:
+        with open(self.file_name, 'a', encoding='utf-8') as f:
             for line in data:
                 if line.endswith('\n'):
                     f.write(line)
