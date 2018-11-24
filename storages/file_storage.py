@@ -26,7 +26,7 @@ class FileStorage(Storage):
                 if line.endswith('\n'):
                     f.write(line)
                 else:
-                    f.write(line + '\n')
+                    f.write(line)
 
     def append_data(self, data):
         """

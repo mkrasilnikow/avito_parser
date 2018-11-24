@@ -1,9 +1,9 @@
-from parsers.parser import Parser
+import requests
+from bs4 import BeautifulSoup
 
-from bs4 import BeautifulSoup  # You can use any other library
 
 
-class HtmlParser(Parser):
+class HtmlParser:
 
     def parse(self, data):
         """
@@ -15,7 +15,9 @@ class HtmlParser(Parser):
         soup = BeautifulSoup(data)
 
         # Your code here: find an appropriate html element
-        objects_list = soup.find('div', {'class': 'itemsList'})
 
         # Your code here
         return [dict()]
+
+    def get_html(self):
+        return None
