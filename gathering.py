@@ -102,7 +102,6 @@ https://www.python.org/dev/peps/pep-0008/
 
 
 Примеры сбора данных:
-https://habrahabr.ru/post/280238/
 
 Для запуска тестов в корне проекта:
 python3 -m unittest discover
@@ -131,26 +130,16 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-SCRAPPED_FILE = 'scrapped_data.txt'
-TABLE_FORMAT_FILE = 'data.csv'
+SCRAPPED_FILE = 'scrapped_data.csv'
 
 
-def gather_process():
+def gather_process(query):
     logger.info("gather")
     storage = FileStorage(SCRAPPED_FILE)
 
     # You can also pass a storage
     scrapper = Scrapper()
-    scrapper.scrap_process(storage)
-
-
-def convert_data_to_table_format():
-    logger.info("transform")
-
-    # Your code here
-    # transform gathered data from txt file to pandas DataFrame and save as csv
-    pass
-
+    scrapper.scrap_process(storage,query)
 
 def stats_of_data():
     logger.info("stats")
@@ -168,13 +157,11 @@ if __name__ == '__main__':
     """
     logger.info("Work started")
 
-    if sys.argv[1] == 'gather':
-        gather_process()
-
-    elif sys.argv[1] == 'transform':
-        convert_data_to_table_format()
-
-    elif sys.argv[1] == 'stats':
-        stats_of_data()
-
+    try:
+        if sys.argv[1] == 'gather' and sys.argv[2] != '':
+            gather_process(sys.argv[2])
+        elif sys.argv[1] == 'stats':
+            stats_of_data()
+    except IndexError:
+        logger.warning("not enough arguments")
     logger.info("work ended")

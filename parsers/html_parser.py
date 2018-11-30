@@ -19,5 +19,3 @@ class HtmlParser:
         # Your code here
         return [dict()]
 
-    def get_html(self):
-        return None

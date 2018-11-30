@@ -1,4 +1,5 @@
 import os
+import csv
 
 from storages.storage import Storage
 
@@ -18,23 +19,55 @@ class FileStorage(Storage):
 
     def write_data(self, data_array):
         """
-        :param data_array: collection of strings that
+        :param data_array: collection of dictionaries that
         should be written as lines
         """
-        with open(self.file_name, 'w', encoding='utf-8') as f:
-            for line in data_array:
-                if line.endswith('\n'):
-                    f.write(line)
-                else:
-                    f.write(line)
+        with open(self.file_name, 'w', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow((
+                'type_of_flat',
+                'area',
+                'floor',
+                'total_floors',
+                'subway',
+                'distance_to_subway',
+                'price',
+            ))
+            for data_elem in data_array:
+                writer.writerow((
+                    data_elem['type_of_flat'],
+                    data_elem['area'],
+                    data_elem['floor'],
+                    data_elem['total_floors'],
+                    data_elem['subway'],
+                    data_elem['distance_to_subway'],
+                    data_elem['price'],
+                ))
+
 
     def append_data(self, data):
         """
-        :param data: string
+        :param data: collection of dictionaries that
+        should be written as lines
         """
-        with open(self.file_name, 'a', encoding='utf-8') as f:
-            for line in data:
-                if line.endswith('\n'):
-                    f.write(line)
-                else:
-                    f.write(line + '\n')
+        with open(self.file_name, 'a', encoding='utf-8', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow((
+                'type_of_flat',
+                'area',
+                'floor',
+                'total_floors',
+                'subway',
+                'distance_to_subway',
+                'price',
+            ))
+            for data_elem in data:
+                writer.writerow((
+                    data_elem['type_of_flat'],
+                    data_elem['area'],
+                    data_elem['floor'],
+                    data_elem['total_floors'],
+                    data_elem['subway'],
+                    data_elem['distance_to_subway'],
+                    data_elem['price'],
+                ))
