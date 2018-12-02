@@ -33,16 +33,17 @@ class FileStorage(Storage):
                 'distance_to_subway',
                 'price',
             ))
-            for data_elem in data_array:
-                writer.writerow((
-                    data_elem['type_of_flat'],
-                    data_elem['area'],
-                    data_elem['floor'],
-                    data_elem['total_floors'],
-                    data_elem['subway'],
-                    data_elem['distance_to_subway'],
-                    data_elem['price'],
-                ))
+            if data_array:
+                for data_elem in data_array:
+                    writer.writerow((
+                        data_elem['type_of_flat'],
+                        data_elem['area'],
+                        data_elem['floor'],
+                        data_elem['total_floors'],
+                        data_elem['subway'],
+                        data_elem['distance_to_subway'],
+                        data_elem['price'],
+                    ))
 
 
     def append_data(self, data):
@@ -52,15 +53,6 @@ class FileStorage(Storage):
         """
         with open(self.file_name, 'a', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow((
-                'type_of_flat',
-                'area',
-                'floor',
-                'total_floors',
-                'subway',
-                'distance_to_subway',
-                'price',
-            ))
             for data_elem in data:
                 writer.writerow((
                     data_elem['type_of_flat'],

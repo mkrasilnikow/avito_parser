@@ -139,7 +139,7 @@ def gather_process(query):
 
     # You can also pass a storage
     scrapper = Scrapper()
-    scrapper.scrap_process(storage,query)
+    scrapper.scrap_process(storage, query)
 
 def stats_of_data():
     logger.info("stats")
