@@ -125,6 +125,7 @@ import sys
 
 from scrappers.scrapper import Scrapper
 from storages.file_storage import FileStorage
+from stats.stats import Statistic
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -133,35 +134,32 @@ logger = logging.getLogger(__name__)
 SCRAPPED_FILE = 'scrapped_data.csv'
 
 
-def gather_process(query):
+def gather_process(url, vpn=False):
     logger.info("gather")
     storage = FileStorage(SCRAPPED_FILE)
 
     # You can also pass a storage
     scrapper = Scrapper()
-    scrapper.scrap_process(storage, query)
+    scrapper.scrap_process(storage, url, vpn)
 
-def stats_of_data():
+
+def stats_of_data(file):
     logger.info("stats")
+    stats = Statistic()
 
-    # Your code here
-    # Load pandas DataFrame and print to stdout different statistics about the data.
-    # Try to think about the data and use not only describe and info.
-    # Ask yourself what would you like to know about this data (most frequent word, or something else)
+    stats.perform_statistic(file)
 
 
 if __name__ == '__main__':
-    """
-    why main is so...?
-    https://stackoverflow.com/questions/419163/what-does-if-name-main-do
-    """
     logger.info("Work started")
-
     try:
-        if sys.argv[1] == 'gather' and sys.argv[2] != '':
-            gather_process(sys.argv[2])
-        elif sys.argv[1] == 'stats':
-            stats_of_data()
+        if sys.argv[1] == 'gather':
+            if len(sys.argv) == 4 and sys.argv[3] == '-vpn':
+                gather_process(sys.argv[2], True)
+            else:
+                gather_process(sys.argv[2], False)
+        elif sys.argv[1] == 'stats' and len(sys.argv) == 3:
+            stats_of_data(sys.argv[2])
     except IndexError:
-        logger.warning("not enough arguments")
+        logger.warning("incorrect arguments")
     logger.info("work ended")

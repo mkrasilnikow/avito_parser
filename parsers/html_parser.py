@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import logging
 import re
+from converters import distance_converter
 
 logger = logging.getLogger(__name__)
 
@@ -10,8 +11,9 @@ class HtmlParser(object):
     def __init__(self, skip_objects=None):
         self.skip_objects = skip_objects
 
-    def get_html(self, url):
-        response = requests.get(url)
+    def get_html(self, url, user_agent=None, proxy=None):
+        response = requests.get(url, headers=user_agent, proxies=proxy)
+        logger.info('Now we use: user-agent=' + str(user_agent) + '   proxy=' + str(proxy))
         if not response.ok:
             logger.error(response.text)
         else:
@@ -31,7 +33,7 @@ class HtmlParser(object):
         data = []
         try:
             ads = soup.find('div', class_='catalog-list').find_all('div', class_='item_table-description')
-        except AttributeError:
+        except:
             logger.error("Can't parse catalog-list")
         for ad in ads:
             # type of flat, square, price, floor, total floors, distance to subway
@@ -60,6 +62,6 @@ class HtmlParser(object):
                          'floor': floor,
                          'total_floors': total_floors,
                          'subway': subway,
-                         'distance_to_subway': distance_to_subway,
+                         'distance_to_subway': distance_converter.convert(distance_to_subway),
                          'price': price, })
         return data
