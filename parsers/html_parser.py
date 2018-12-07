@@ -53,8 +53,10 @@ class HtmlParser(object):
                 logger.error("Can't parse price and full_address")
             try:
                 distance_to_subway = ad.find('p', class_='address').find('span', class_="c-2").string.strip()
+                distance_to_subway = distance_converter.convert(re.search(r'\d+.\d+', distance_to_subway).group(0))
                 subway = re.match(r'\D+', full_address).group(0).strip()
             except AttributeError:
+                logger.warning("Distance to subway or subway station is not defined!")
                 distance_to_subway = ''
                 subway = ''
             data.append({'type_of_flat': type_of_flat,
@@ -62,6 +64,6 @@ class HtmlParser(object):
                          'floor': floor,
                          'total_floors': total_floors,
                          'subway': subway,
-                         'distance_to_subway': distance_converter.convert(distance_to_subway),
+                         'distance_to_subway': distance_to_subway,
                          'price': price, })
         return data

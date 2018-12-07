@@ -29,14 +29,14 @@ class Scrapper(object):
         total_pages = html_parser.get_pages(response.text)
         logger.info("total pages is " + str(total_pages))
         storage.write_data([])
-        for i in range(total_pages):
+        for i in range(1, total_pages + 1):
             generated_url = url + '?p=' + str(i)
             logger.info("Get url " + generated_url)
+            sleep(10)
             try:
                 html = html_parser.get_html(generated_url, user_agent, proxy)
                 storage.append_data(html_parser.get_page_data(html))
-                sleep(uniform(10, 15))
             except:
-                logger.info("Get page data from page " + str(i))
+                logger.error("Can't get page data from page " + str(i))
                 continue
 

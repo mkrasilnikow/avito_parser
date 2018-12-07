@@ -1,6 +1,14 @@
+import logging
+
+logger = logging.getLogger(__name__)
+
+
 def convert(distance):
     try:
-        return int(distance)
+        dist = int(distance)
+        return dist
     except ValueError:
-        return int(distance * 1000)
+        logger.warning("Cast distance to int")
+        dist = float(distance) * 1000
+        return int(dist)
 
